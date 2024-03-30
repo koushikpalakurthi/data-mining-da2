@@ -1,0 +1,62 @@
+# Load required libraries
+library(cluster)
+library(ggplot2)
+
+# Load the dataset
+data <- read.csv("C:\Users\91798\OneDrive - vit.ac.in\Desktop\wine-clustering.csv")
+
+# Remove any missing values
+data <- na.omit(data)
+data
+# Extract features for clustering
+features <- data[, -1]  # Assuming the first column is not a feature
+
+# Step 1: Construct initial partitioning using hierarchical clustering
+hierarchical_result <- hclust(dist(features))
+initial_partition <- cutree(hierarchical_result, k = 3)  # Assuming 3 clusters initially
+
+# Step 2: Refine initial partitioning using k-means or another partitioning algorithm
+refined_partition <- kmeans(features, centers = 3)$cluster  # Assuming k-means for simplicity
+
+# Step 3: Merge clusters using similarity and density measures
+merged_clusters <- merge_clusters(initial_partition, refined_partition, similarity_threshold = 0.5)  # Adjust threshold as needed
+
+# Step 4: Final clustering result
+final_clusters <- merged_clusters
+
+# Plot dendrogram
+plot(hierarchical_result)
+
+# Plot pie chart to visualize cluster distributions
+pie(table(final_clusters), main = "CHAMELEON Clustering")
+
+# Function to merge clusters based on similarity and density measures
+merge_clusters <- function(initial_partition, refined_partition, similarity_threshold) {
+  merged_clusters <- initial_partition
+  
+  for (i in 1:length(initial_partition)) {
+    if (initial_partition[i] != refined_partition[i]) {
+      # Calculate similarity between clusters i and refined_partition[i]
+      # Here, you need to define your similarity measure
+      similarity <- calculate_similarity(initial_partition, refined_partition, i)
+      
+      # Merge clusters if similarity exceeds a threshold
+      if (similarity > similarity_threshold) {
+        merged_clusters[i] <- refined_partition[i]
+      }
+    }
+  }
+  
+  return(merged_clusters)
+}
+
+# Function to calculate similarity between two clusters
+calculate_similarity <- function(initial_partition, refined_partition, cluster_index) {
+  # Here, you need to define your similarity measure
+  # This could involve comparing the centroids, density, or other properties of the clusters
+  
+  # For simplicity, let's assume clusters are considered similar if they have the same label
+  similarity <- ifelse(initial_partition[cluster_index] == refined_partition[cluster_index], 1, 0)
+  
+  return(similarity)
+}

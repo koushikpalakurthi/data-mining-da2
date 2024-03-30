@@ -1,0 +1,20 @@
+# Load required library
+library(cluster)
+
+# Read the dataset
+data <- read.csv("C:\\Users\\91798\\OneDrive - vit.ac.in\\Desktop\\wine-clustering.csv", header = TRUE)
+
+# Select only the attributes for clustering
+attributes <- data[, c("Alcohol", "Malic_Acid", "Ash", "Ash_Alcanity", "Magnesium", 
+                       "Total_Phenols", "Flavanoids", "Nonflavanoid_Phenols", 
+                       "Proanthocyanins", "Color_Intensity", "Hue", "OD280", "Proline")]
+
+# Perform K-Means clustering
+kmeans_result <- kmeans(attributes, centers = 3)
+
+# Print the clustering result
+print(kmeans_result)
+
+# Plot the clusters
+plot(attributes, col = kmeans_result$cluster, main = "K-Means Clustering")
+points(kmeans_result$centers, col = 1:3, pch = 8, cex = 2)

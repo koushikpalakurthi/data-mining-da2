@@ -1,0 +1,22 @@
+# Load required libraries
+library(fpc)
+library(dbscan)
+library(ggplot2)
+
+# Load the dataset
+data <- read.csv("C:\Users\91798\OneDrive - vit.ac.in\Desktop\wine-clustering.csv")
+
+
+# Remove any missing values
+data <- na.omit(data)
+
+# Extract features for clustering
+features <- data[, -1]  # Assuming the first column is not a feature
+
+# DBSCAN clustering
+dbscan_result <- dbscan(features, eps = 0.5, minPts = 5)
+dbscan_clusters <- dbscan_result$cluster
+
+# Plot a pie chart to visualize cluster distributions
+pie(table(dbscan_clusters), main = "DBSCAN Clustering")
+dbscan_clusters

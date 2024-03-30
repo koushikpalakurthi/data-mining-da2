@@ -1,0 +1,19 @@
+# Load required library
+library(cluster)
+
+# Read the dataset
+data <- read.csv("C:\\Users\\91798\\OneDrive - vit.ac.in\\Desktop\\wine-clustering.csv", header = TRUE)
+
+# Select only the attributes for clustering
+attributes <- data[, c("Alcohol", "Malic_Acid", "Ash", "Ash_Alcanity", "Magnesium", 
+                       "Total_Phenols", "Flavanoids", "Nonflavanoid_Phenols", 
+                       "Proanthocyanins", "Color_Intensity", "Hue", "OD280", "Proline")]
+
+# Perform CLARA clustering
+clara_result <- clara(attributes, k = 3, samples = 5)
+
+# Print the clustering result
+print(clara_result)
+
+# Plot the clusters
+plot(clara_result)

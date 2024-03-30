@@ -1,0 +1,23 @@
+# Load required library
+library(cluster)
+
+# Load the dataset
+data <- read.csv("C:\Users\91798\OneDrive - vit.ac.in\Desktop\wine-clustering.csv")
+
+# Remove any missing values
+data <- na.omit(data)
+
+# Extract features for clustering
+features <- data[, -1]  # Assuming the first column is not a feature
+
+# Perform DIANA clustering
+diana_result <- diana(features)
+
+# Get cluster assignments
+diana_clusters <- cutree(diana_result, k = 3)  # Assuming 3 clusters
+
+# Print cluster assignments
+print(diana_clusters)
+
+# Plot dendrogram
+plot(diana_result)
